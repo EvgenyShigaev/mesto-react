@@ -20,11 +20,7 @@ export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardCl
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-  })
-
-  const cardElements = cards.map((card) => (
-    <Card card={card} onCardClick={onCardClick} key={card._id} />
-  ));
+  }, [])
 
   return (
     <main className="content">
@@ -42,7 +38,10 @@ export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardCl
       </section>
 
       <section className="elements">
-        <ul className="elements__container">{cardElements}</ul>
+        <ul className="elements__container">{cards.map((card) => (
+          <Card card={card} onCardClick={onCardClick} key={card._id} />
+        ))};
+        </ul>
       </section>
     </main>
   )
