@@ -28,9 +28,10 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.job,
+        about: data.about,
       }),
     }).then(this._getJson);
+
   }
   editProfileAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
@@ -41,21 +42,32 @@ class Api {
       }),
     }).then(this._getJson);
   }
-  addCard(data) {
-    return fetch(`${this._url}/cards`, {
-      method: "POST",
+
+  editUserAvatar(data) {
+    return fetch(`${this._url}/users/me/avatar`, {
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name: data.place,
-        link: data.link,
+        avatar: data.avatar,
       }),
     }).then(this._getJson);
   }
-   deleteCard(id) { 
-    return fetch(`${this._url}/cards/${id}`, { 
-      method: "DELETE", 
+
+  addCard(data) {
+    return fetch(`${this._url}/cards`, { 
+      method: "POST", 
       headers: this._headers, 
+      body: JSON.stringify({ 
+        name: data.name, 
+        link: data.link, 
+      }), 
     }).then(this._getJson); 
+  }
+  deleteCard(id) {
+    return fetch(`${this._url}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._getJson);
   }
   addLike(id) {
     return fetch(`${this._url}/cards/${id}/likes`, {
@@ -69,9 +81,16 @@ class Api {
       headers: this._headers,
     }).then(this._getJson);
   }
+  changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      return this.addLike(cardId);
+    } else {
+      return this.deleteLike(cardId);
+    }
+  }
 }
 
- export const api = new Api({
+export const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-65",
   headers: {
     "Content-Type": "application/json",
